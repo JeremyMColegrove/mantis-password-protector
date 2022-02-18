@@ -1,0 +1,23 @@
+
+{
+  "productName":"Mantis",
+    "appId": "illuminati.security.mantis",
+    "extends": null,
+    "files": [
+      "build",
+      "*.js",
+      "public"
+    ],
+    "directories": {
+      "buildResources": "public"
+    },
+  "win":{
+    "target":"nsis"
+  },
+  "mac":{
+    "target":"dmg"
+  },
+  "linux":{
+    "target":"appImage"
+  }
+}
