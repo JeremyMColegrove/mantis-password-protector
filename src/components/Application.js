@@ -51,7 +51,6 @@ function Application() {
 
     // when the splash screen gives the data to the window
     ipcRenderer.on('data', (e, args)=>{
-
         // validate the data here
         if (args.key != null && args.key.length > 10) {
             setKey(args.key)
@@ -60,9 +59,6 @@ function Application() {
         if (args.data != null && Array.isArray(args.data)) {
             setData(args.data)
         } else return
-
-        // signal for the main window to take over
-        ipcRenderer.send('switch')
     })
   
 
@@ -103,9 +99,6 @@ function Application() {
   }
   
   function lock() {
-      setOpen(false)
-      setData([])
-      setKey("")
       // switch to lock screen
       ipcRenderer.send('lock')
   }

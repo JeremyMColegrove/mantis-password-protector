@@ -15,7 +15,7 @@ class CryptoMachine {
         try {
             ENCRYPTION_KEY = key
             let text = fs.readFileSync(path, 'utf8')
-            let json = JSON.parse(this.decrypt(text))
+            let json = JSON.parse(this.decrypt(text)) 
             return json
         } catch(err) {
             return null

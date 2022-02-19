@@ -36,10 +36,7 @@ function Splash() {
         e.preventDefault()
         let result = machine.load(key)
         if (result != null) {
-            setKey("")
-            setTest({errors:[]})
-
-            ipcRenderer.send("data", {data:result, key})
+            ipcRenderer.send("switch", {data:result, key})
         } else {
             setTest({errors:["Incorrect key"]})
         }
@@ -59,7 +56,7 @@ function Splash() {
             setKey("")
             setTest({errors:[]})
             setReset(false)
-            ipcRenderer.send("data", {data:[], key})
+            ipcRenderer.send("switch", {data:[], key})
         } else {
             setTest(result)
         }
@@ -101,9 +98,12 @@ function Splash() {
                     })}
                 </div>
 
-
-                <button type="submit" className=" text-slate-50 w-full h-10 bg-orange-600">{reset?"Continue":"Unlock"}</button>
+                <div className='w-full'>
+                    <button type="submit" className=" mb-4 text-slate-50 w-full h-10 bg-orange-600">{reset?"Continue":"Unlock"}</button>
+                    <p className='text-slate-500 w-full'>Mantis Version {process.env.REACT_APP_VERSION}</p>
+                </div>
         </form>
+        
     </div>
   )
 }
