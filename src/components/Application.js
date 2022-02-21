@@ -5,8 +5,10 @@ import Hamburger from '../img/hamburger.png'
 import CryptoMachine from '../components/Encryptor'
 import PreyingMantis from '../img/preyingmantis.png'
 import Item from '../components/item'
+import HamburgerWhite from '../img/hamburger_white.png'
 import Header from './Header'
-
+import useThemeDetector from './useThemeDetector'
+import { Hint } from 'react-autocomplete-hint';
 const {app} = window.require('@electron/remote')
 
 const fs = window.require('fs')
@@ -37,13 +39,22 @@ function Application() {
     const [password, setPassword] = useState("")
     const [description, setDescription] = useState("")
     const [funnyWord, setFunnyWord] = useState(silly[Math.floor(Math.random()*silly.length)])
-    
+    const isDarkTheme = useThemeDetector()
+    const [hints, setHints] = useState([])
     const [key, setKey] = useState("")
 
     const [open, setOpen] = useState(false)
     const [search, setSearch] = useState("")
 
     const machine = new CryptoMachine()
+    
+    useEffect(()=>{
+      //set the hints
+      let _hints = []
+      data.forEach(login=>_hints.push(login.username))
+      console.log(_hints)
+      setHints(_hints)
+    }, [data])
 
     useEffect(()=>{
         // lock()
@@ -122,34 +133,36 @@ function Application() {
     });
   }
   return (
-    <div className="text-slate-300 overflow-hidden w-full  h-screen bg-gray-300 text-sm">
+    <div className="text-slate-800 dark:text-slate-100 bg-gray-300 dark:bg-zinc-800 overflow-hidden w-full  h-screen  text-sm">
         <Header/>
 
           <div className='flex flex-row z-50'>
-            <div style={{display:open?"":"none"}} ref={impactRef} className='absolute z-50 text-slate-600 bg-gray-200 shadow-lg flex flex-col justify-between w-full max-w-sm py-10 px-5 top-0 h-full dark'>
-              <div className=' text-slate-500'>
-                <div className='flex items-center justify-center text-slate-600 flex-row mb-10'>
-                  <img src={PreyingMantis} alt="mantis" className='opacity-30 mr-2 object-contain h-12 '/>
+            <div style={{display:open?"":"none"}} ref={impactRef} className='absolute z-50 bg-gray-400 dark:bg-zinc-900   shadow-lg flex flex-col justify-between w-full max-w-sm py-10 px-5 top-0 h-full '>
+              <div>
+                <div className='flex items-center justify-center  flex-row mb-10'>
+                  <img src={PreyingMantis} alt="mantis" className=' mr-2 object-contain h-20  '/>
                   
                 </div>
                 <p className='mb-5'>{funnyWord}</p>
                 
-
-                <CInput value={website} onChange={e=>setWebsite(e.target.value)} placeholder="Website" type="text" className="w-full  mb-4 p-1 py-2 px-3"/>
-                <CInput value={username} onChange={e=>setUsername(e.target.value)} placeholder="Username" type="text" className="w-full mb-4 p-1 py-2 px-3"/>
-                <CInput value={password} onChange={e=>setPassword(e.target.value)} placeholder="Password" type="text" className="w-full mb-4 p-1 py-2 px-3"/>
-                <textarea value={description} onChange={e=>setDescription(e.target.value)} placeholder='Description' className='rounded input w-full py-2 mb-4 p-1 px-3 h-40'></textarea>
+                
+                <CInput value={website} onChange={e=>setWebsite(e.target.value)} placeholder="Website" type="text" className="w-full text-zinc-800 dark:bg-zinc-700 dark:text-zinc-200  mb-4 p-1 py-2 px-3"/>
+                  <Hint options={hints} allowTabFill={true} className="text-slate-200">
+                    <input type="text" placeholder='Username' onChange={e=>setUsername(e.target.value)} className="w-full text-zinc-800 dark:bg-zinc-700 dark:text-zinc-200 mb-4 p-1 py-2 px-3"/>
+                  </Hint>
+                <CInput value={password} onChange={e=>setPassword(e.target.value)} placeholder="Password" type="text" className="w-full text-zinc-800 dark:bg-zinc-700 dark:text-zinc-200 mb-4 p-1 py-2 px-3"/>
+                <textarea value={description} onChange={e=>setDescription(e.target.value)} placeholder='Description' className='rounded text-zinc-800 dark:bg-zinc-700 dark:text-zinc-200  input w-full py-2 mb-4 p-1 px-3 h-40'></textarea>
 
               </div>
               <div>
-                <button onClick={save} className='hover:bg-orange-800 shadow-md bg-orange-700 mb-4 text-slate-100  rounded p-1 py-2 w-full'>Secure</button>
+                <button onClick={save} className='hover:bg-orange-800 text-zinc-100 shadow-md bg-orange-700 mb-4   rounded p-1 py-2 w-full'>Secure</button>
                 <div className='flex flex-row justify-between w-full h-7 opacity-70'>
                     {/* <img src={DownloadIcon} alt="download" className=' mr-4 h-full p-px'/> */}
                     {/* <img src={LockIcon} alt="download" className='h-full p-px'/> */}
-                    <div onClick={saveCSV} className='rounded hover:bg-gray-300 hover:cursor-pointer p-4 flex flex-row items-center justify-center'>
+                    <div onClick={saveCSV} className='rounded hover:bg-gray-300 dark:hover:bg-zinc-700 hover:cursor-pointer p-4 flex flex-row items-center justify-center'>
                         Download CSV
                     </div>
-                    <div onClick={lock} className='rounded hover:bg-gray-300 hover:cursor-pointer p-4 flex flex-row items-center justify-center'>
+                    <div onClick={lock} className='rounded hover:bg-gray-300 dark:hover:bg-zinc-700 hover:cursor-pointer p-4 flex flex-row items-center justify-center'>
                         Lock
                     </div>
                 </div>
@@ -158,23 +171,26 @@ function Application() {
 
             {/* The main window scene */}
             <div className="w-full h-full">
-              <div className="h-4/12 m-10 mb-8 mt-6 flex flex-row text-slate-600">
-                <div onClick={()=>setOpen(open=>!open)} className="hover:cursor-pointer w-14 mr-1 rounded bg-gray-50 flex flex-row justify-center items-center">
-                    <img src={Hamburger} alt="hamburger" className='w-4 opacity-50'/>
+              <div className="h-4/12 m-10 mb-8 mt-6 flex flex-row ">
+                <div onClick={()=>setOpen(open=>!open)} className="hover:cursor-pointer bg-gray-50 dark:bg-zinc-700 dark:hover:bg-zinc-600 w-14 mr-1 rounded  flex flex-row justify-center items-center">
+                    <img src={isDarkTheme?HamburgerWhite:Hamburger} alt="hamburger" className='w-4 dark:w-6 opacity-50 '/>
                 </div>
-                <CInput value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search username, website or description" type="text" className="p-3 px-3 w-full rounded-lg input"/>
+                <CInput value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search username, website or description" type="text" className="p-3 dark:bg-zinc-700 dark:text-zinc-200  px-3 w-full rounded-lg "/>
               </div>
-              <div className='mx-10 text-slate-500 pl-12 pr-4'>
-                <div className='flex flex-row justify-between '>
-                  <p>Site</p>
-                  <p>Username</p>
-                  <p>Password</p>
+              <div className='mx-10 px-4'>
+                <div className='grid grid-cols-3'>
+                  <p className='text-left'>Site</p>
+                  <p className='text-center'>Username</p>
+                  <p className='text-right'>Password</p>
                 </div>
                 {/* Divider for list labels */}
                 <div className='w-full  my-4 h-px'/>
               </div>
-              <div className='mx-5 px-5 overflow-y-auto text-slate-600' style={{height:"calc(100vh - 16em)"}}>
-                {data.map((item, index) =>{
+              <div className='mx-5 px-5 overflow-y-auto ' style={{height:"calc(100vh - 16em)"}}>
+                {data && data.length === 0 && (
+                  <p className='text-center dark:text-zinc-400'>It appears you have no logins</p>
+                )}
+                {data && data.map((item, index) =>{
                             // check if something is in search
                             let insearch = false
                             if (item.description.toLowerCase().includes(search)) {

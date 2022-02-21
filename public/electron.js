@@ -2,23 +2,23 @@ const { app, BrowserWindow,ipcMain, ipcRenderer } = require('electron')
 const remoteMain  = require('@electron/remote/main')
 const isDev = require('electron-is-dev')
 require('@electron/remote/main').initialize()
-
+const contextMenu = require('electron-context-menu');
 const { autoUpdater } = require("electron-updater")
 autoUpdater.autoDownload = false
 // autoUpdater.logger = console.log;
 // autoUpdater.logger.transports.file.level = "info";
 // autoUpdater.logger = console.log;
-
+contextMenu({
+	showSaveImageAs: false
+});
 
 
 let login, win, updater
 
 // closes the updater and launches the login
 function closeUpdater() {
-    setTimeout(()=>{
-        createLogin()
-        updater.close()
-    }, 3000)
+    createLogin()
+    updater.close()
 }
 
 // triggers for updating
@@ -63,7 +63,8 @@ const createLogin = () => {
         webPreferences:preferences,
         frame:false,
         resizable:false,
-        show:false
+        show:false,
+        spellCheck:true
     })
     
     remoteMain.enable(login.webContents)
@@ -85,9 +86,12 @@ const createApplication = () => {
     win = new BrowserWindow({
         width: 700,
         height: 900,
+        minWidth:400,
         webPreferences:preferences,
         show:false,
         frame:false,
+        roundedCorners:false,
+        spellCheck:true
     });
     remoteMain.enable(win.webContents);
     win.removeMenu()
@@ -96,6 +100,7 @@ const createApplication = () => {
     } else {
         win.loadFile('./build/index.html', { hash: '/application' });
     }
+    win.webContents.openDevTools({detached:true});
 
     win.once('ready-to-show', ()=>{
         win.show()
@@ -110,7 +115,9 @@ function instantiateUpdater() {
         show:false,
         frame:false,
         center:true,
-        alwaysOnTop:true
+        alwaysOnTop:true,
+        roundedCorners:false,
+        spellCheck:true
     })
 
     remoteMain.enable(updater.webContents);

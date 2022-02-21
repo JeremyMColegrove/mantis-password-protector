@@ -25,7 +25,6 @@ function Updater() {
     })
     ipcRenderer.on('update-not-available', ()=>{
         setState(states.NOT_AVAILABLE)
-        console.log('update-not-available')
     })
     ipcRenderer.on('error', (_, err)=>{
         setState(states.FAILED)
