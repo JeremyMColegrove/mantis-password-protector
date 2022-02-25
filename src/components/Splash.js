@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import CryptoMachine from './Encryptor'
 import PreyingMantis from '../img/preyingmantis.png'
 import PreyingMantisDark from '../img/preyingmantis_dark.png'
-
+// import Hint from './autocomplete-hint/index'
 import CloseIconWhite from '../img/close_white.png'
 import Header from './Header'
 import useThemeDetector from './useThemeDetector'
@@ -92,6 +92,7 @@ function Splash() {
                     {!reset && <>
                         <p className='mb-5 '>Welcome to Mantis Protector! The Mantis is happy you returned. Lets decrypt your file using you master key!</p>
                         <input placeholder='Secret' className='rounded text-zinc-800 dark:bg-zinc-700 dark:text-zinc-200  p-2 w-full mb-4' value={key} onChange={e=>setKey(e.target.value)} type="text"/>
+                        {/* <Hint options={['banana', 'strawberry', 'blasting']} placeholder="Secret" className='rounded text-zinc-800 dark:bg-zinc-700 dark:text-zinc-200  p-2 w-full mb-4' value={key} onChange={e=>setKey(e.target.value)} type="text"/> */}
                     </>}
                     {/* All of the password checking stuff */}
                     {test && test.errors && test.errors.map((error, index)=>{

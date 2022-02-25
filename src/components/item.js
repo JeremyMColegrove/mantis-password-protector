@@ -20,7 +20,7 @@ function Item(props) {
         props.onRemove(props.index)
     }
   return (
-    <div className=' mb-4 text-zinc-800 dark:text-zinc-100 w-full rounded items-center  bg-gray-100 dark:bg-zinc-600 h-fit ' style={{alignItems:open?'flex-start':""}}> 
+    <div className=' mb-4 text-zinc-800 dark:text-zinc-100 w-full rounded items-center  bg-gray-100 dark:hover:bg-zinc-700 bg-transparent h-fit ' style={{alignItems:open?'flex-start':""}}> 
         <div onClick={()=>setOpen(open=>!open)}  className='hover:cursor-pointer justify-between grid grid-cols-3 p-4'>
             <p className=''>{strip(item.website)}</p>
             <p className='text-center'>{item.username}</p>

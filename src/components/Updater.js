@@ -39,16 +39,16 @@ function Updater() {
     })
 
   return (
-    <div className='w-full justify-center bg-gray-50 items-center h-screen'>
+    <div className='w-full justify-center bg-gray-50 dark:bg-zinc-900 dark:text-zinc-200 items-center h-screen'>
         <div className='h-36 flex flex-row justify-center items-end'>
             <img src={MantisIcon} alt="mantis" className='opacity-50 w-20'/>
         </div>
         <div className='h-16 flex flex-row justify-center items-end'>
-            <p className='text-slate-500 '>{state}</p>
+            <p className=''>{state}</p>
         </div>
         <div className='h-16 px-10 w-full flex flex-row justify-center items-end'>
             {state === states.DOWNLOADING && <>
-                <div className='w-full rounded-full h-2 bg-gray-300'>
+                <div className='w-full rounded-full h-2 bg-gray-300 dark:bg-zinc-700'>
                     <div className=' rounded-full h-full bg-gray-500' style={{width:`${progress}%`}}>
 
                     </div>
